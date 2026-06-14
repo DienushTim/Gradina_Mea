@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grădina Diana</title>
+<link rel="stylesheet" href="style.css">
+<script src="data.js"></script>
+</head>
+<body>
+<header>
+  <h1>Grădina Diana</h1>
+  <p>Inventar, calendar, stropiri, jurnal și export. Datele adăugate din aplicație se salvează în browserul tău.</p>
+  <div class="stats">
+    <div><b id="statPlants">0</b><span>fișe plante</span></div>
+    <div><b id="statPriority">0</b><span>prioritate ridicată</span></div>
+    <div><b id="statJournal">0</b><span>înregistrări jurnal</span></div>
+  </div>
+</header>
+
+<nav>
+  <button data-tab="plants">Plante</button>
+  <button data-tab="add">Adaugă plantă</button>
+  <button data-tab="calendar">Calendar</button>
+  <button data-tab="treatments">Stropiri</button>
+  <button data-tab="journal">Jurnal</button>
+  <button data-tab="export">Export/Import</button>
+</nav>
+
+<main>
+<section id="plants" class="tab active">
+  <div class="toolbar">
+    <input id="search" placeholder="Caută plantă, categorie, observații...">
+    <select id="categoryFilter"><option value="">Toate categoriile</option></select>
+  </div>
+  <div id="plantsGrid" class="grid"></div>
+</section>
+
+<section id="add" class="tab">
+  <h2>Adaugă sau editează plantă</h2>
+  <form id="plantForm">
+    <input type="hidden" id="editId">
+    <label>Nume <input id="name" required></label>
+    <label>Categorie <input id="category" required></label>
+    <label>Număr <input id="count" value="1"></label>
+    <label>Status <input id="status" value="confirmat"></label>
+    <label>Stare <input id="state" value="de verificat"></label>
+    <label>Prioritate
+      <select id="priority">
+        <option>scăzută</option><option selected>medie</option><option>ridicată</option>
+      </select>
+    </label>
+    <label>Observații <textarea id="notes" rows="4"></textarea></label>
+    <button type="submit">Salvează planta</button>
+    <button type="button" id="resetForm">Curăță formularul</button>
+  </form>
+</section>
+
+<section id="calendar" class="tab">
+  <h2>Calendar anual</h2>
+  <div id="calendarGrid" class="grid"></div>
+</section>
+
+<section id="treatments" class="tab">
+  <h2>Stropiri și tratamente</h2>
+  <p class="note">Pentru o curte mică, stropirile trebuie să fie minime și țintite. Nu stropi în timpul înfloririi și respectă eticheta produselor.</p>
+  <table id="treatmentsTable"></table>
+</section>
+
+<section id="journal" class="tab">
+  <h2>Jurnal</h2>
+  <form id="journalForm" class="inlineForm">
+    <input id="jDate" type="date">
+    <input id="jPlant" placeholder="Plantă">
+    <input id="jObservation" placeholder="Observație">
+    <input id="jWork" placeholder="Lucrare">
+    <input id="jResult" placeholder="Rezultat">
+    <button>Adaugă</button>
+  </form>
+  <table id="journalTable"></table>
+</section>
+
+<section id="export" class="tab">
+  <h2>Export / Import</h2>
+  <p>Datele introduse prin aplicație se păstrează în Local Storage. Pentru backup, exportă JSON-ul.</p>
+  <div class="actions">
+    <button id="exportJson">Descarcă JSON</button>
+    <button id="exportCsv">Descarcă CSV plante</button>
+    <label class="file">Import JSON <input type="file" id="importJson" accept=".json"></label>
+    <button id="resetData" class="danger">Revino la datele inițiale</button>
+  </div>
+  <textarea id="jsonPreview" rows="18" readonly></textarea>
+</section>
+</main>
+
+<footer>
+  <span>Aplicație locală HTML/CSS/JS. Poate fi publicată pe GitHub Pages.</span>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
