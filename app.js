@@ -2,6 +2,27 @@ const DEFAULT_DATA = window.GRADINA_DATA;
 const KEY = "gradinaDianaDataV1";
 let data = loadData();
 
+const EXTERNAL_PHOTOS = [
+  "https://gradina-mea.org/assets/image-001.jpg",
+  "https://gradina-mea.org/assets/image-002.jpg",
+  "https://gradina-mea.org/assets/image-003.jpg",
+  "https://gradina-mea.org/assets/image-004.jpg",
+  "https://gradina-mea.org/assets/image-005.jpg",
+  "https://gradina-mea.org/assets/image-006.jpg",
+  "https://gradina-mea.org/assets/image-007.jpg",
+  "https://gradina-mea.org/assets/image-008.jpg",
+  "https://gradina-mea.org/assets/image-009.jpg",
+  "https://gradina-mea.org/assets/image-010.jpg",
+  "https://gradina-mea.org/assets/image-011.jpg",
+  "https://gradina-mea.org/assets/image-012.jpg",
+  "https://gradina-mea.org/assets/image-013.jpg",
+  "https://gradina-mea.org/assets/image-014.jpg",
+  "https://gradina-mea.org/assets/image-015.jpg",
+  "https://gradina-mea.org/assets/image-016.jpg",
+  "https://gradina-mea.org/assets/image-017.jpg",
+  "https://gradina-mea.org/assets/image-018.jpg"
+];
+
 function loadData(){
   const saved = localStorage.getItem(KEY);
   if(saved){ try { return JSON.parse(saved); } catch(e){} }
@@ -10,6 +31,14 @@ function loadData(){
 function saveData(){ localStorage.setItem(KEY, JSON.stringify(data)); renderAll(); }
 function uid(prefix="P"){ return prefix + Math.random().toString(36).slice(2,7).toUpperCase(); }
 function esc(s){ return String(s ?? "").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])); }
+
+function renderExternalGallery(){
+  const container = document.getElementById("externalGallery");
+  if(!container) return;
+  container.innerHTML = EXTERNAL_PHOTOS.map(url =>
+    `<article class="card photo-card"><img src="${url}" alt="Galerie Gradina Mea"><div class="photo-caption">Imagine din proiectul original</div></article>`
+  ).join("");
+}
 
 document.querySelectorAll("nav button").forEach(btn=>{
   btn.addEventListener("click",()=>{ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active")); btn.classList.add("active");
@@ -93,6 +122,6 @@ importJson.onchange=e=>{
 };
 resetData.onclick=()=>{ if(confirm("Revii la datele inițiale și pierzi modificările locale?")){ localStorage.removeItem(KEY); data=structuredClone(DEFAULT_DATA); renderAll(); } };
 function renderExport(){ jsonPreview.value = JSON.stringify(data,null,2); }
-function renderAll(){ renderStats(); renderCategories(); renderPlants(); renderCalendar(); renderTreatments(); renderJournal(); renderExport(); }
+function renderAll(){ renderStats(); renderCategories(); renderPlants(); renderCalendar(); renderTreatments(); renderJournal(); renderExport(); renderExternalGallery(); }
 search.addEventListener("input", renderPlants); categoryFilter.addEventListener("change", renderPlants);
 renderAll();

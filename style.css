@@ -245,6 +245,66 @@ main {
   font-size: 14px;
 }
 
+.info-note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--primary-dark);
+  opacity: 0.9;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.full-width-card {
+  grid-column: 1 / -1;
+}
+
+.calendar-summary h4 {
+  margin: 16px 0 8px;
+  font-size: 18px;
+  color: var(--primary-dark);
+}
+
+.calendar-summary ul {
+  margin: 0 0 0 18px;
+  padding: 0;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.calendar-summary li {
+  margin-bottom: 6px;
+}
+
+.photo-grid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.photo-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.photo-caption {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: #f9f9f9;
+}
+
 /* ==================== TOOLBAR ==================== */
 .toolbar {
   display: flex;
