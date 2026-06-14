@@ -65,8 +65,8 @@ function renderPlants(){
   const list = data.plants.filter(p => (!cat || p.category===cat) && JSON.stringify(p).toLowerCase().includes(q));
   document.getElementById("plantsGrid").innerHTML = list.map(p=>`
     <article class="card ${String(p.priority).includes("ridicată")?'high':''}">
-      ${p.plantImage ? `<img src="${p.plantImage}" alt="${esc(p.name)}" class="card-plant-image">` : ''}
       <h3>${esc(p.name)}</h3>
+      ${p.plantImage ? `<img src="${p.plantImage}" alt="${esc(p.name)}" class="card-plant-image">` : ''}
       <div class="meta">${esc(p.id)} · ${esc(p.category)}</div>
       <span class="badge">nr: ${esc(p.count)}</span><span class="badge">${esc(p.status)}</span><span class="badge">${esc(p.state)}</span><span class="badge">prioritate: ${esc(p.priority)}</span>
       <p>${esc(p.notes)}</p>
