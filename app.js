@@ -143,7 +143,7 @@ function renderExport(){ jsonPreview.value = JSON.stringify(data,null,2); }
 function renderAll(){ renderStats(); renderCategories(); renderPlants(); renderCalendar(); renderTreatments(); renderJournal(); renderExport(); renderExternalGallery(); }
 search.addEventListener("input", renderPlants); categoryFilter.addEventListener("change", renderPlants);
 
-async function exportImagesForGitHub(){
+window.exportImagesForGitHub = async function(){
   const zip = new JSZip();
   const imagesToExport = data.plants.filter(p => p.plantImage);
   if(imagesToExport.length === 0){ alert("Nu ai adaugat imagini!"); return; }
@@ -151,7 +151,7 @@ async function exportImagesForGitHub(){
   zip.file("plants-metadata.json", JSON.stringify(metadata, null, 2));
   for(const plant of imagesToExport){ const base64 = plant.plantImage; const data_part = base64.split(",")[1]; zip.folder(`images/${plant.id}`).file("image.png", data_part, {base64: true}); }
   const content = await zip.generateAsync({type: "blob"}); const url = URL.createObjectURL(content); const a = document.createElement("a"); a.href = url; a.download = `Gradina_Mea_Imagini_${new Date().toISOString().slice(0,10)}.zip`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-}
+};
 
-document.getElementById("exportGithub").addEventListener("click", exportImagesForGitHub);
+document.getElementById("exportGithub").addEventListener("click", window.exportImagesForGitHub);
 renderAll();
