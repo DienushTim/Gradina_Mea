@@ -23,64 +23,6 @@ const EXTERNAL_PHOTOS = [
   "https://gradina-mea.org/assets/image-018.jpg"
 ];
 
-const PLANT_CATEGORY_IMAGES = [
-  {pattern: /arbori fructiferi/i, url: EXTERNAL_PHOTOS[0]},
-  {pattern: /conifere|pin|tuia|ienupăr/i, url: EXTERNAL_PHOTOS[5]},
-  {pattern: /arbori ornamentali/i, url: EXTERNAL_PHOTOS[3]},
-  {pattern: /aromatique|melifere/i, url: EXTERNAL_PHOTOS[7]},
-  {pattern: /fructifere|căpărătoare/i, url: EXTERNAL_PHOTOS[1]},
-  {pattern: /ghiveci/i, url: EXTERNAL_PHOTOS[8]},
-  {pattern: /trandafiri/i, url: EXTERNAL_PHOTOS[9]},
-  {pattern: /fructifere mici|căpșuni|fragi/i, url: EXTERNAL_PHOTOS[2]},
-  {pattern: /bulbi|toporași|narcise|zambile|iriși|gladiole/i, url: EXTERNAL_PHOTOS[11]},
-  {pattern: /ornamentale/i, url: EXTERNAL_PHOTOS[4]}
-];
-
-const PLANT_IMAGE_OVERRIDES = {
-  A01: EXTERNAL_PHOTOS[0],
-  A02: EXTERNAL_PHOTOS[1],
-  A03: EXTERNAL_PHOTOS[2],
-  A04: EXTERNAL_PHOTOS[3],
-  A05: EXTERNAL_PHOTOS[4],
-  A06: EXTERNAL_PHOTOS[5],
-  A07: EXTERNAL_PHOTOS[6],
-  C01: EXTERNAL_PHOTOS[6],
-  C02: EXTERNAL_PHOTOS[5],
-  C03: EXTERNAL_PHOTOS[5],
-  V01: EXTERNAL_PHOTOS[1],
-  V02: EXTERNAL_PHOTOS[1],
-  F01: EXTERNAL_PHOTOS[2],
-  F02: EXTERNAL_PHOTOS[2],
-  F03: EXTERNAL_PHOTOS[2],
-  F04: EXTERNAL_PHOTOS[2],
-  F05: EXTERNAL_PHOTOS[2],
-  H01: EXTERNAL_PHOTOS[7],
-  H02: EXTERNAL_PHOTOS[7],
-  H03: EXTERNAL_PHOTOS[7],
-  H04: EXTERNAL_PHOTOS[7],
-  H05: EXTERNAL_PHOTOS[8],
-  O01: EXTERNAL_PHOTOS[9],
-  O02: EXTERNAL_PHOTOS[10],
-  O03: EXTERNAL_PHOTOS[10],
-  O04: EXTERNAL_PHOTOS[6],
-  O05: EXTERNAL_PHOTOS[11],
-  O06: EXTERNAL_PHOTOS[11],
-  O07: EXTERNAL_PHOTOS[11],
-  O08: EXTERNAL_PHOTOS[11],
-  O09: EXTERNAL_PHOTOS[11],
-  O10: EXTERNAL_PHOTOS[11],
-  G01: EXTERNAL_PHOTOS[12],
-  G02: EXTERNAL_PHOTOS[13],
-  G03: EXTERNAL_PHOTOS[14],
-  G04: EXTERNAL_PHOTOS[15]
-};
-
-function getPlantImage(plant){
-  if(PLANT_IMAGE_OVERRIDES[plant.id]) return PLANT_IMAGE_OVERRIDES[plant.id];
-  const found = PLANT_CATEGORY_IMAGES.find(item => item.pattern.test(plant.category || ""));
-  return found ? found.url : EXTERNAL_PHOTOS[16];
-}
-
 function loadData(){
   const saved = localStorage.getItem(KEY);
   if(saved){ try { return JSON.parse(saved); } catch(e){} }
@@ -121,22 +63,15 @@ function renderPlants(){
   const q = document.getElementById("search").value.toLowerCase();
   const cat = document.getElementById("categoryFilter").value;
   const list = data.plants.filter(p => (!cat || p.category===cat) && JSON.stringify(p).toLowerCase().includes(q));
-  document.getElementById("plantsGrid").innerHTML = list.map(p=>{
-    const imageUrl = getPlantImage(p);
-    return `
-    <article class="card plant-card ${String(p.priority).includes("ridicată")?'high':''}" style="background-image:url('${imageUrl}')">
-      <div class="card-content">
-        <h3>${esc(p.name)}</h3>
-        <div class="meta">${esc(p.id)} · ${esc(p.category)}</div>
-        <span class="badge">nr: ${esc(p.count)}</span><span class="badge">${esc(p.status)}</span><span class="badge">${esc(p.state)}</span><span class="badge">prioritate: ${esc(p.priority)}</span>
-        <p>${esc(p.notes)}</p>
-        <div class="card-actions">
-          <button onclick="editPlant('${esc(p.id)}')">Editează</button>
-          <button onclick="deletePlant('${esc(p.id)}')" class="danger">Șterge</button>
-        </div>
-      </div>
-    </article>`;
-  }).join("");
+  document.getElementById("plantsGrid").innerHTML = list.map(p=>`
+    <article class="card ${String(p.priority).includes("ridicată")?'high':''}">
+      <h3>${esc(p.name)}</h3>
+      <div class="meta">${esc(p.id)} · ${esc(p.category)}</div>
+      <span class="badge">nr: ${esc(p.count)}</span><span class="badge">${esc(p.status)}</span><span class="badge">${esc(p.state)}</span><span class="badge">prioritate: ${esc(p.priority)}</span>
+      <p>${esc(p.notes)}</p>
+      <button onclick="editPlant('${esc(p.id)}')">Editează</button>
+      <button onclick="deletePlant('${esc(p.id)}')" class="danger">Șterge</button>
+    </article>`).join("");
 }
 function editPlant(id){
   const p = data.plants.find(x=>x.id===id); if(!p) return;
