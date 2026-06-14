@@ -9,92 +9,164 @@
 </head>
 <body>
 <header>
-  <h1>Grădina Diana</h1>
-  <p>Inventar, calendar, stropiri, jurnal și export. Datele adăugate din aplicație se salvează în browserul tău.</p>
-  <div class="stats">
-    <div><b id="statPlants">0</b><span>fișe plante</span></div>
-    <div><b id="statPriority">0</b><span>prioritate ridicată</span></div>
-    <div><b id="statJournal">0</b><span>înregistrări jurnal</span></div>
+  <div class="header-content">
+    <div class="header-left">
+      <div class="logo">🌱</div>
+      <div>
+        <h1>Grădina Diana</h1>
+        <p>Gestiunea completă a grădinii tale - Plante, calendar, stropiri & jurnal</p>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-icon">🌿</div>
+        <div class="stat-value"><b id="statPlants">0</b></div>
+        <div class="stat-label">Plante</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-value"><b id="statPriority">0</b></div>
+        <div class="stat-label">Prioritate</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">📔</div>
+        <div class="stat-value"><b id="statJournal">0</b></div>
+        <div class="stat-label">Înregistrări</div>
+      </div>
+    </div>
   </div>
 </header>
 
-<nav>
-  <button data-tab="plants">Plante</button>
-  <button data-tab="add">Adaugă plantă</button>
-  <button data-tab="calendar">Calendar</button>
-  <button data-tab="treatments">Stropiri</button>
-  <button data-tab="journal">Jurnal</button>
-  <button data-tab="export">Export/Import</button>
+<nav class="navbar">
+  <button class="nav-btn" data-tab="plants">🌿 Plante</button>
+  <button class="nav-btn" data-tab="add">➕ Adaugă</button>
+  <button class="nav-btn" data-tab="calendar">📅 Calendar</button>
+  <button class="nav-btn" data-tab="treatments">💧 Stropiri</button>
+  <button class="nav-btn" data-tab="journal">📔 Jurnal</button>
+  <button class="nav-btn" data-tab="export">💾 Export</button>
 </nav>
 
 <main>
 <section id="plants" class="tab active">
+  <div class="section-header">
+    <h2>🌿 Plantele Tale</h2>
+    <p>Gestionează și monitorizează fiecare plantă din grădina ta</p>
+  </div>
   <div class="toolbar">
-    <input id="search" placeholder="Caută plantă, categorie, observații...">
-    <select id="categoryFilter"><option value="">Toate categoriile</option></select>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input id="search" placeholder="Caută plantă, categorie, observații...">
+    </div>
+    <select id="categoryFilter" class="filter-select"><option value="">Toate categoriile</option></select>
   </div>
   <div id="plantsGrid" class="grid"></div>
 </section>
 
 <section id="add" class="tab">
-  <h2>Adaugă sau editează plantă</h2>
-  <form id="plantForm">
+  <div class="section-header">
+    <h2>➕ Adaugă sau Editează Plantă</h2>
+    <p>Completează informațiile plantei tale</p>
+  </div>
+  <form id="plantForm" class="plant-form">
     <input type="hidden" id="editId">
-    <label>Nume <input id="name" required></label>
-    <label>Categorie <input id="category" required></label>
-    <label>Număr <input id="count" value="1"></label>
-    <label>Status <input id="status" value="confirmat"></label>
-    <label>Stare <input id="state" value="de verificat"></label>
-    <label>Prioritate
-      <select id="priority">
-        <option>scăzută</option><option selected>medie</option><option>ridicată</option>
-      </select>
-    </label>
-    <label>Observații <textarea id="notes" rows="4"></textarea></label>
-    <button type="submit">Salvează planta</button>
-    <button type="button" id="resetForm">Curăță formularul</button>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>🌱 Nume<span class="required">*</span></label>
+        <input id="name" required placeholder="Exemplu: Măr productiv">
+      </div>
+      <div class="form-group">
+        <label>📂 Categorie<span class="required">*</span></label>
+        <input id="category" required placeholder="Exemplu: Arbori fructiferi">
+      </div>
+      <div class="form-group">
+        <label>🔢 Număr</label>
+        <input id="count" value="1" type="number" min="1">
+      </div>
+      <div class="form-group">
+        <label>✅ Status</label>
+        <input id="status" value="confirmat" placeholder="confirmat, de confirmat">
+      </div>
+      <div class="form-group">
+        <label>💚 Stare</label>
+        <input id="state" value="de verificat" placeholder="bună, foarte bună, etc">
+      </div>
+      <div class="form-group">
+        <label>⚡ Prioritate</label>
+        <select id="priority">
+          <option>scăzută</option><option selected>medie</option><option>ridicată</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group full-width">
+      <label>📝 Observații</label>
+      <textarea id="notes" rows="5" placeholder="Adaugă note importante despre plantă..."></textarea>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">💾 Salvează Planta</button>
+      <button type="button" id="resetForm" class="btn-secondary">🔄 Curăță Formularul</button>
+    </div>
   </form>
 </section>
 
 <section id="calendar" class="tab">
-  <h2>Calendar anual</h2>
+  <div class="section-header">
+    <h2>📅 Calendar Anual</h2>
+    <p>Activități și lucrări lunare în grădină</p>
+  </div>
   <div id="calendarGrid" class="grid"></div>
 </section>
 
 <section id="treatments" class="tab">
-  <h2>Stropiri și tratamente</h2>
-  <p class="note">Pentru o curte mică, stropirile trebuie să fie minime și țintite. Nu stropi în timpul înfloririi și respectă eticheta produselor.</p>
-  <table id="treatmentsTable"></table>
+  <div class="section-header">
+    <h2>💧 Stropiri și Tratamente</h2>
+    <p>Program de udare și tratamente pentru plante</p>
+  </div>
+  <div class="note">
+    <span class="note-icon">ℹ️</span>
+    <span>Pentru o curte mică, stropirile trebuie să fie minime și țintite. Nu stropi în timpul înfloririi și respectă eticheta produselor.</span>
+  </div>
+  <table id="treatmentsTable" class="data-table"></table>
 </section>
 
 <section id="journal" class="tab">
-  <h2>Jurnal</h2>
-  <form id="journalForm" class="inlineForm">
+  <div class="section-header">
+    <h2>📔 Jurnal de Observații</h2>
+    <p>Înregistrează observații zilnice din grădină</p>
+  </div>
+  <form id="journalForm" class="journal-form">
     <input id="jDate" type="date">
-    <input id="jPlant" placeholder="Plantă">
-    <input id="jObservation" placeholder="Observație">
-    <input id="jWork" placeholder="Lucrare">
-    <input id="jResult" placeholder="Rezultat">
-    <button>Adaugă</button>
+    <input id="jPlant" placeholder="🌿 Plantă">
+    <input id="jObservation" placeholder="👁️ Observație">
+    <input id="jWork" placeholder="🔨 Lucrare">
+    <input id="jResult" placeholder="✨ Rezultat">
+    <button type="submit" class="btn-primary">➕ Adaugă</button>
   </form>
-  <table id="journalTable"></table>
+  <table id="journalTable" class="data-table"></table>
 </section>
 
 <section id="export" class="tab">
-  <h2>Export / Import</h2>
-  <p>Datele introduse prin aplicație se păstrează în Local Storage. Pentru backup, exportă JSON-ul.</p>
-  <div class="actions">
-    <button id="exportJson">Descarcă JSON</button>
-    <button id="exportCsv">Descarcă CSV plante</button>
-    <label class="file">Import JSON <input type="file" id="importJson" accept=".json"></label>
-    <button id="resetData" class="danger">Revino la datele inițiale</button>
+  <div class="section-header">
+    <h2>💾 Export / Import Backup</h2>
+    <p>Descarcă și restaurează datele din grădina ta</p>
   </div>
-  <textarea id="jsonPreview" rows="18" readonly></textarea>
+  <p class="info-text">Datele introduse se păstrează în Local Storage. Pentru backup, exportă JSON-ul.</p>
+  <div class="actions">
+    <button id="exportJson" class="btn-primary">📥 Descarcă JSON</button>
+    <button id="exportCsv" class="btn-primary">📊 Descarcă CSV Plante</button>
+    <label class="file-input-wrapper">
+      📤 Import JSON
+      <input type="file" id="importJson" accept=".json">
+    </label>
+    <button id="resetData" class="btn-danger">⚠️ Revino la Datele Inițiale</button>
+  </div>
+  <div class="json-preview-box">
+    <textarea id="jsonPreview" rows="20" readonly placeholder="Previzualizare JSON..."></textarea>
+  </div>
 </section>
 </main>
 
 <footer>
-  <span>Aplicație locală HTML/CSS/JS. Poate fi publicată pe GitHub Pages.</span>
+  <p>🌍 Aplicație locală HTML/CSS/JS · 💾 Datele se salvează în browserul tău · 🚀 Gestionează-ți grădina cu ușurință</p>
 </footer>
 <script src="app.js"></script>
 </body>
