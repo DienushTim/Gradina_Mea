@@ -65,6 +65,7 @@ function renderPlants(){
   const list = data.plants.filter(p => (!cat || p.category===cat) && JSON.stringify(p).toLowerCase().includes(q));
   document.getElementById("plantsGrid").innerHTML = list.map(p=>`
     <article class="card ${String(p.priority).includes("ridicată")?'high':''}">
+      ${p.plantImage ? `<img src="${p.plantImage}" alt="${esc(p.name)}" class="card-plant-image">` : ''}
       <h3>${esc(p.name)}</h3>
       <div class="meta">${esc(p.id)} · ${esc(p.category)}</div>
       <span class="badge">nr: ${esc(p.count)}</span><span class="badge">${esc(p.status)}</span><span class="badge">${esc(p.state)}</span><span class="badge">prioritate: ${esc(p.priority)}</span>
@@ -77,6 +78,10 @@ function editPlant(id){
   const p = data.plants.find(x=>x.id===id); if(!p) return;
   document.querySelector('nav button[data-tab="add"]').click();
   editId.value=p.id; name.value=p.name; category.value=p.category; count.value=p.count; status.value=p.status; state.value=p.state; priority.value=p.priority.includes("ridicată")?"ridicată":p.priority; notes.value=p.notes;
+  if(p.plantImage){
+    const preview = document.getElementById("imagePreview");
+    preview.innerHTML = `<img src="${p.plantImage}" alt="Preview">`;
+  }
 }
 function deletePlant(id){
   if(!confirm("Ștergi această plantă?")) return;
@@ -85,13 +90,26 @@ function deletePlant(id){
 plantForm.addEventListener("submit", e=>{
   e.preventDefault();
   const id = editId.value || uid("P");
-  const item = {id, name:name.value, category:category.value, count:count.value, status:status.value, state:state.value, priority:priority.value, notes:notes.value};
+  const previewImg = document.querySelector("#imagePreview img");
+  const item = {id, name:name.value, category:category.value, count:count.value, status:status.value, state:state.value, priority:priority.value, notes:notes.value, plantImage: previewImg ? previewImg.src : ""};
   const i = data.plants.findIndex(p=>p.id===id);
   if(i>=0) data.plants[i]=item; else data.plants.push(item);
-  plantForm.reset(); editId.value=""; count.value="1"; status.value="confirmat"; state.value="de verificat"; priority.value="medie";
+  plantForm.reset(); editId.value=""; count.value="1"; status.value="confirmat"; state.value="de verificat"; priority.value="medie"; document.getElementById("imagePreview").innerHTML="";
   saveData(); document.querySelector('nav button[data-tab="plants"]').click();
 });
-resetForm.addEventListener("click",()=>{ plantForm.reset(); editId.value=""; count.value="1"; status.value="confirmat"; state.value="de verificat"; priority.value="medie"; });
+resetForm.addEventListener("click",()=>{ plantForm.reset(); editId.value=""; count.value="1"; status.value="confirmat"; state.value="de verificat"; priority.value="medie"; document.getElementById("imagePreview").innerHTML=""; });
+
+// Handle image upload
+document.getElementById("plantImage").addEventListener("change", e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    const preview = document.getElementById("imagePreview");
+    preview.innerHTML = `<img src="${reader.result}" alt="Preview">`;
+  };
+  reader.readAsDataURL(file);
+});
 
 function renderCalendar(){
   calendarGrid.innerHTML = data.tasks.map(m=>`<div class="card"><h3>${esc(m.month)}</h3><ul>${m.tasks.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>`).join("");
